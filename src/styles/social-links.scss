@@ -27,6 +27,13 @@
             opacity 200ms ease,
             scale 300ms ease-in-out;
 
+        // Platzhalter, solange die Lebenslauf-Datei noch fehlt.
+        &--inactive {
+            cursor: default;
+            opacity: 0;
+            color: rgb(255 255 255 / 42%);
+        }
+
         &::before {
             content: '';
             position: absolute;
@@ -83,6 +90,10 @@
 
         &--linkedin {
             --social-icon: url('../assets/icons/linkedin.svg');
+        }
+
+        &--instagram {
+            --social-icon: url('../assets/icons/instagram.svg');
         }
 
         &--download {

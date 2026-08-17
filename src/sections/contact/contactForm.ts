@@ -137,6 +137,12 @@ const validateContactField = (field: ContactField, value: string): string | unde
     return length > 4_000 ? 'Höchstens 4000 Zeichen verwenden.' : undefined;
 };
 
+// Auf false, solange kein Mailversand angebunden ist (Vercel hat keine
+// Cloudflare Pages Function). Auf true stellen, sobald Resend haengt.
+const CONTACT_DELIVERY_ENABLED = false;
+const CONTACT_DELIVERY_DISABLED_MESSAGE =
+    'Der Versand wird gerade eingerichtet. Bitte schreiben Sie mir direkt an adnan.aydin@bluewin.ch.';
+
 const contactFormMessages: Record<ContactFormStatus, string> = {
     idle: '',
     'validation-failure': 'Bitte Angaben prüfen und erneut versuchen.',
@@ -374,6 +380,13 @@ export const initContactForm = (): void => {
 
         const message = validateForm();
         if (!message) {
+            return;
+        }
+
+        // Der Versand haengt noch am alten Cloudflare-Endpunkt; bis Resend
+        // angebunden ist, bleibt das Formular eine Anzeige mit Validierung.
+        if (!CONTACT_DELIVERY_ENABLED) {
+            statusRegion.textContent = CONTACT_DELIVERY_DISABLED_MESSAGE;
             return;
         }
 
