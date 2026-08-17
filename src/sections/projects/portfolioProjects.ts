@@ -102,6 +102,7 @@ const frontEndProjects: PortfolioProject[] = [
         domain: 'Creative Web Development / Interactive 3D',
 
         owner: 'Independent Personal Project',
+        liveUrl: 'https://adnanlebenslauf.vercel.app/',
         constellation: {
             id: 'front-end',
             position: [-1.02, 0.82, -0.18],
