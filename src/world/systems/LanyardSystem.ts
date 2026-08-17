@@ -16,6 +16,11 @@ const GRAVITY = -26;
 const DAMPING = 0.985;
 // ponytail: konstante Brise statt Turbulenzmodell; Wert ist der Regler dafuer.
 const WIND_STRENGTH = 3.4;
+// Mobil haengt eine Miniaturkarte neben dem INTRO-Menuepunkt: Seil 1 cm, Karte 1.5 cm.
+const MOBILE_ROPE_CM = 1;
+const MOBILE_CARD_CM = 1.5;
+const CSS_PX_PER_CM = 96 / 2.54;
+const DESKTOP_ROPE_FACTOR = 0.46;
 const CARD_IMAGE_URL = 'https://res.cloudinary.com/ixyonosn/image/upload/v1786943873/Gemini_Generated_Image_sjtag6sjtag6sjta.jpg';
 const CARD_TEXTURE_WIDTH = 512;
 const CARD_TEXTURE_HEIGHT = 744;
@@ -53,6 +58,12 @@ export class LanyardSystem {
     private torsion = 0;
     private torsionVelocity = 0;
     private windTime = Math.random() * 40;
+    private isMobile: boolean;
+    private cardScale = 1;
+    private bandWidth = BAND_WIDTH;
+    private anchorX = 0;
+    private introRect: DOMRect | undefined;
+    private introRectAge = 0;
 
     constructor(
         scene: THREE.Scene,
@@ -63,11 +74,10 @@ export class LanyardSystem {
         this.camera = camera;
         this.canvas = canvas;
         this.reducedMotion = responsiveConfig.reducedMotion;
-        this.allowDrag = !responsiveConfig.hasCoarsePointer;
+        this.allowDrag = true;
+        this.isMobile = responsiveConfig.isMobile;
 
         this.group.name = 'Lanyard';
-        // Auf Mobilgeräten verdeckt die Karte den Inhalt und bringt nichts: aus.
-        this.group.visible = !responsiveConfig.isMobile;
         this.group.renderOrder = 120;
         scene.add(this.group);
 
@@ -129,11 +139,7 @@ export class LanyardSystem {
 
     public setResponsiveConfig(config: ResponsiveConfig): void {
         this.reducedMotion = config.reducedMotion;
-        this.allowDrag = !config.hasCoarsePointer;
-        this.group.visible = !config.isMobile;
-        if (!this.allowDrag) {
-            this.dragging = false;
-        }
+        this.isMobile = config.isMobile;
     }
 
     public setVisible(visible: boolean): void {
@@ -150,21 +156,28 @@ export class LanyardSystem {
 
         const halfHeight =
             Math.tan(THREE.MathUtils.degToRad(this.camera.fov) * 0.5) * CARD_DEPTH;
-        const segmentLength = (halfHeight * 0.46) / (ROPE_POINTS - 1);
-        const anchorY = halfHeight * 0.98;
+        const { anchorX, anchorY, ropeLength, cardScale, bandWidth } = this.getLayout(halfHeight);
+        const segmentLength = ropeLength / (ROPE_POINTS - 1);
         const anchor = this.points[0];
+
+        this.cardScale = cardScale;
+        this.bandWidth = bandWidth;
+        this.card.scale.setScalar(cardScale);
+        this.clip.scale.setScalar(cardScale);
 
         // Springt der Anker (erster Frame, Resize, FOV-Fahrt), hängt das Seil sonst als
         // gefaltete Kette fest: rein senkrechte Falten sind ein stabiles Gleichgewicht.
         if (
             Math.abs(segmentLength - this.segmentLength) > 0.01 ||
-            Math.abs(anchorY - anchor.position.y) > 0.01
+            Math.abs(anchorY - anchor.position.y) > 0.01 ||
+            Math.abs(anchorX - this.anchorX) > 0.01
         ) {
             this.segmentLength = segmentLength;
+            this.anchorX = anchorX;
             this.resetRope(anchorY);
         }
 
-        anchor.position.set(0, anchorY, -CARD_DEPTH);
+        anchor.position.set(anchorX, anchorY, -CARD_DEPTH);
         anchor.previous.copy(anchor.position);
 
         const step = Math.min(delta, 1 / 30);
@@ -182,6 +195,7 @@ export class LanyardSystem {
         window.removeEventListener('pointermove', this.handlePointerMove);
         window.removeEventListener('pointerup', this.handlePointerUp);
         window.removeEventListener('pointercancel', this.handlePointerUp);
+        window.removeEventListener('touchmove', this.blockTouchScroll);
         this.group.removeFromParent();
         this.bandGeometry.dispose();
         this.card.geometry.dispose();
@@ -191,12 +205,67 @@ export class LanyardSystem {
         (this.band.material as THREE.Material).dispose();
     }
 
+    /**
+     * Desktop: grosse Karte mittig unter der Oberkante. Mobil: Miniatur neben dem
+     * INTRO-Menuepunkt, in Zentimetern bemessen statt in Weltkoordinaten.
+     */
+    private getLayout(halfHeight: number): {
+        anchorX: number;
+        anchorY: number;
+        ropeLength: number;
+        cardScale: number;
+        bandWidth: number;
+    } {
+        if (!this.isMobile) {
+            return {
+                anchorX: 0,
+                anchorY: halfHeight * 0.98,
+                ropeLength: halfHeight * DESKTOP_ROPE_FACTOR,
+                cardScale: 1,
+                bandWidth: BAND_WIDTH,
+            };
+        }
+
+        const worldPerPixel = (halfHeight * 2) / Math.max(1, window.innerHeight);
+        const cardScale = (MOBILE_CARD_CM * CSS_PX_PER_CM * worldPerPixel) / CARD_HEIGHT;
+        const anchorRect = this.getIntroLinkRect();
+        const halfWidth = halfHeight * this.camera.aspect;
+        const anchorX = anchorRect
+            ? ((anchorRect.right + 10) / window.innerWidth) * 2 * halfWidth - halfWidth
+            : -halfWidth * 0.55;
+        const anchorY = anchorRect
+            ? halfHeight - (anchorRect.bottom / window.innerHeight) * 2 * halfHeight
+            : halfHeight * 0.9;
+
+        return {
+            anchorX,
+            anchorY,
+            ropeLength: MOBILE_ROPE_CM * CSS_PX_PER_CM * worldPerPixel,
+            cardScale,
+            bandWidth: BAND_WIDTH * cardScale,
+        };
+    }
+
+    /** Position des INTRO-Links; nur alle paar Frames gemessen, Layout-Reads sind teuer. */
+    private getIntroLinkRect(): DOMRect | undefined {
+        this.introRectAge += 1;
+        if (this.introRect && this.introRectAge < 30) {
+            return this.introRect;
+        }
+
+        this.introRectAge = 0;
+        const link = document.querySelector('.nav__link[data-scroll="#intro"]');
+        this.introRect = link instanceof Element ? link.getBoundingClientRect() : undefined;
+
+        return this.introRect;
+    }
+
     /** Hängt das Seil gerade unter den Anker; die winzige Neigung verhindert Faltungen. */
     private resetRope(anchorY: number): void {
         for (let index = 0; index < this.points.length; index += 1) {
             const point = this.points[index];
             point.position.set(
-                index * 0.01,
+                this.anchorX + index * 0.01,
                 anchorY - index * this.segmentLength,
                 -CARD_DEPTH,
             );
@@ -212,7 +281,8 @@ export class LanyardSystem {
         const wind = this.reducedMotion
             ? 0
             : (Math.sin(this.windTime * 0.62) + Math.sin(this.windTime * 1.43 + 1.1) * 0.45) *
-              WIND_STRENGTH;
+              WIND_STRENGTH *
+              (this.isMobile ? 0.5 : 1);
 
         for (let index = 0; index < this.points.length; index += 1) {
             const point = this.points[index];
@@ -271,7 +341,7 @@ export class LanyardSystem {
             if (direction.lengthSq() < 1e-6) {
                 direction.set(0, -1, 0);
             }
-            side.crossVectors(direction, view).normalize().multiplyScalar(BAND_WIDTH);
+            side.crossVectors(direction, view).normalize().multiplyScalar(this.bandWidth);
 
             for (let column = 0; column < columns; column += 1) {
                 const offset = BAND_COLUMNS[column];
@@ -302,7 +372,7 @@ export class LanyardSystem {
         this.clip.rotation.set(0, 0, Math.atan2(direction.x, -direction.y));
         this.card.position
             .copy(tail.position)
-            .addScaledVector(direction, CARD_HEIGHT * 0.5 + 0.52);
+            .addScaledVector(direction, (CARD_HEIGHT * 0.5 + 0.52) * this.cardScale);
 
         const lateralVelocity = tail.position.x - tail.previous.x;
         // Eigenständige Drehung um die Hochachse, damit die Karte sich zeigt und zurückschwingt.
@@ -340,6 +410,8 @@ export class LanyardSystem {
         this.group.worldToLocal(this.hit.copy(intersection.point));
         this.dragOffset.copy(this.hit).sub(this.points[this.points.length - 1].position);
         document.body.style.cursor = 'grabbing';
+        // Solange der Finger die Karte haelt, darf die Seite nicht mitscrollen.
+        window.addEventListener('touchmove', this.blockTouchScroll, { passive: false });
     };
 
     private readonly handlePointerMove = (event: PointerEvent): void => {
@@ -364,6 +436,13 @@ export class LanyardSystem {
         this.dragging = false;
         this.dragPointerId = undefined;
         document.body.style.cursor = '';
+        window.removeEventListener('touchmove', this.blockTouchScroll);
+    };
+
+    private readonly blockTouchScroll = (event: TouchEvent): void => {
+        if (this.dragging && event.cancelable) {
+            event.preventDefault();
+        }
     };
 
     private updatePointer(event: PointerEvent): void {
