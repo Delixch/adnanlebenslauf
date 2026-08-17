@@ -5,6 +5,8 @@ const DESKTOP_PIXEL_RATIO_CAP = 2;
 const DESKTOP_BLOOM_PIXEL_RATIO_CAP = 2;
 const MOBILE_BLOOM_STRENGTH_SCALE = 0.66;
 const TEXT_MOBILE_MAX_SCALE = 0.88;
+// Unter diesem Wert laufen die Partikelbuchstaben auf dem Handy ineinander.
+const TEXT_MOBILE_MIN_SCALE = 0.68;
 const TEXT_TABLET_START_SCALE = 0.72;
 const TEXT_TABLET_SCALE_REDUCTION = 0.12;
 const TEXT_DESKTOP_START_SCALE_RANGE = 0.28;
@@ -186,7 +188,11 @@ const getResponsiveConfig = (
         DESKTOP_EXPERIENCE_ROW_INLINE_PADDING,
         desktopHtmlSpacingProgress,
     );
-    const mobileTextScale = TEXT_MOBILE_MAX_SCALE * clamp(width / MOBILE_MAX_WIDTH, 0, 1);
+    const mobileTextScale = clamp(
+        TEXT_MOBILE_MAX_SCALE * (width / MOBILE_MAX_WIDTH),
+        TEXT_MOBILE_MIN_SCALE,
+        TEXT_MOBILE_MAX_SCALE,
+    );
     const textTransformScaleStart = isMobile
         ? mobileTextScale
         : isTablet
@@ -220,7 +226,7 @@ const getResponsiveConfig = (
                     ? 0
                     : TEXT_DESKTOP_SCALE_ARC_STRENGTH * desktopViewportProgress,
             relativeOffsetYFactor: isMobile ? -1 : 0,
-            topAnchor: isMobile ? 0.35 : 0.3,
+            topAnchor: isMobile ? 0.18 : 0.3,
             scrollDepthOffset: isMobile ? 4 : 0,
         },
         layout: {
@@ -235,17 +241,17 @@ const getResponsiveConfig = (
             intro: {
                 start: useCompactMotion ? '70% top' : 'center+=1000 top',
                 end: 'bottom top',
-                scrub: reducedMotion ? true : useCompactMotion ? 0.6 : 1.2,
+                scrub: reducedMotion ? true : isMobile ? 0.2 : useCompactMotion ? 0.6 : 1.2,
             },
             contact: {
                 start: isMobile ? 'center bottom' : 'top top',
                 end: isMobile ? 'bottom bottom' : 'center top',
-                scrub: reducedMotion ? true : isMobile ? 0.45 : useCompactMotion ? 0.6 : 1.2,
+                scrub: reducedMotion ? true : isMobile ? 0.2 : useCompactMotion ? 0.6 : 1.2,
             },
         },
         mainCloud: {
             sizeBase: isMobile ? 150 : 200,
-            pointSizeScale: isMobile ? 0.6 : 1,
+            pointSizeScale: isMobile ? 0.5 : 1,
             introParticleControl: isMobile ? 1 : 0,
         },
     } satisfies Pick<ResponsiveConfig, 'text' | 'layout' | 'sectionTextAnimations' | 'mainCloud'>;

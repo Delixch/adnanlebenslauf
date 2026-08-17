@@ -231,7 +231,8 @@ export class LanyardSystem {
         const anchorRect = this.getIntroLinkRect();
         const halfWidth = halfHeight * this.camera.aspect;
         const anchorX = anchorRect
-            ? ((anchorRect.right + 10) / window.innerWidth) * 2 * halfWidth - halfWidth
+            ? ((anchorRect.left + anchorRect.width * 0.5) / window.innerWidth) * 2 * halfWidth -
+              halfWidth
             : -halfWidth * 0.55;
         const anchorY = anchorRect
             ? halfHeight - (anchorRect.bottom / window.innerHeight) * 2 * halfHeight

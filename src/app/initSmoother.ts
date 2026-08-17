@@ -23,7 +23,8 @@ export function initSmoother(config: ResponsiveConfig) {
                 : true
             : false,
         speed: smoothScrollingEnabled ? (config.isCompact ? 1 : 1.2) : 1,
-        smoothTouch: smoothScrollingEnabled ? (config.isCompact ? 0.85 : 3) : 0,
+        // 0.85 s Nachlauf liess Text und Szene auf dem Handy hinterherhinken.
+        smoothTouch: smoothScrollingEnabled ? (config.isCompact ? 0.3 : 3) : 0,
         ignoreMobileResize: true,
     });
 }
