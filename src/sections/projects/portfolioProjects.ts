@@ -253,14 +253,14 @@ const frontEndProjects: PortfolioProject[] = [
 const fullStackProjects: PortfolioProject[] = [
     {
         id: 'masters-thesis',
-        title: 'Master’s Thesis: Real-time Groupware Synchronization Application (Collab)',
-        label: 'Collab Sync',
+        title: 'Wartet auf Ihren Auftrag',
+        label: 'AUFTRAG GESUCHT',
 
         description:
-            'A research-driven groupware application exploring real-time synchronization across distributed clients. The project focused on conflict handling, data consistency, and the architectural trade-offs required for reliable collaborative editing.',
+            'Dieser Platz wartet auf Ihr Projekt. Haben Sie eine Idee, eine Website, die nicht mehr passt, oder eine Aufgabe, die schon lange liegen bleibt? Schreiben Sie mir — unverbindlich und ohne Fachjargon. Den ersten Schritt zu machen ist der halbe Weg zum fertigen Projekt: adnan.aydin@bluewin.ch',
 
-        period: 'February 2020 – July 2021',
-        role: 'Master of Engineering Student',
+        period: 'offen',
+        role: 'Frei für neue Arbeit',
 
         skills: [
             'full-stack',
@@ -279,7 +279,7 @@ const fullStackProjects: PortfolioProject[] = [
         ],
 
         domain: 'Computer Science / Distributed Systems',
-        owner: 'AGH University of Krakow',
+        owner: 'Ihr Projekt?',
 
         constellation: {
             id: 'full-stack',
@@ -289,14 +289,14 @@ const fullStackProjects: PortfolioProject[] = [
     },
     {
         id: 'bachelors-thesis',
-        title: 'Bachelor’s Thesis: A web-based groupware application that provides a knowledge management solution (Collab)',
-        label: 'Collab Knowledge',
+        title: 'Wartet auf Ihren Auftrag',
+        label: 'AUFTRAG GESUCHT',
 
         description:
-            'A web-based knowledge-management platform designed to help project teams organize and share information. Led a student development team while shaping the architecture, data model, and full-stack implementation.',
+            'Dieser Platz wartet auf Ihr Projekt. Haben Sie eine Idee, eine Website, die nicht mehr passt, oder eine Aufgabe, die schon lange liegen bleibt? Schreiben Sie mir — unverbindlich und ohne Fachjargon. Den ersten Schritt zu machen ist der halbe Weg zum fertigen Projekt: adnan.aydin@bluewin.ch',
 
-        period: 'October 2016 – January 2020',
-        role: 'BE Student / .NET Students Scientific Association Leader',
+        period: 'offen',
+        role: 'Frei für neue Arbeit',
 
         skills: [
             'full-stack',
@@ -312,7 +312,7 @@ const fullStackProjects: PortfolioProject[] = [
         ],
 
         domain: 'Computer Science / Knowledge Management',
-        owner: 'Cracow University of Technology',
+        owner: 'Ihr Projekt?',
 
         constellation: {
             id: 'full-stack',
@@ -419,14 +419,14 @@ const fullStackProjects: PortfolioProject[] = [
     },
     {
         id: 'help-and-support',
-        title: 'Help & Support Center',
-        label: 'Help Center',
+        title: 'Wartet auf Ihren Auftrag',
+        label: 'AUFTRAG GESUCHT',
 
         description:
-            'A responsive single-page support application for investment-account and employee-scheme customers. Built React interfaces from detailed designs and integrated them with a .NET API gateway that exposed content from a legacy knowledge system.',
+            'Dieser Platz wartet auf Ihr Projekt. Haben Sie eine Idee, eine Website, die nicht mehr passt, oder eine Aufgabe, die schon lange liegen bleibt? Schreiben Sie mir — unverbindlich und ohne Fachjargon. Den ersten Schritt zu machen ist der halbe Weg zum fertigen Projekt: adnan.aydin@bluewin.ch',
 
-        period: 'October 2021 – June 2023',
-        role: 'Senior Full-Stack Developer',
+        period: 'offen',
+        role: 'Frei für neue Arbeit',
 
         skills: [
             'front-end',
@@ -440,7 +440,7 @@ const fullStackProjects: PortfolioProject[] = [
         ],
 
         domain: 'Corporate Services / Financial Support',
-        owner: 'Endava (Client: Equiniti)',
+        owner: 'Ihr Projekt?',
 
         constellation: {
             id: 'full-stack',
@@ -453,12 +453,12 @@ const fullStackProjects: PortfolioProject[] = [
 const backEndProjects: PortfolioProject[] = [
     {
         id: 'groupware-knowledge-platform',
-        title: 'Knowledge Management & Collaborative Groupware',
-        label: 'Groupware',
+        title: 'Wartet auf Ihren Auftrag',
+        label: 'AUFTRAG GESUCHT',
         description:
-            'A collaborative knowledge platform for organizing and exchanging information within project teams. Led the student team and contributed to the React interface, ASP.NET Core services, persistence model, and overall application architecture.',
-        period: 'March 2019 – May 2019',
-        role: 'A leader of .NET students scientific association | Group representative',
+            'Dieser Platz wartet auf Ihr Projekt. Haben Sie eine Idee, eine Website, die nicht mehr passt, oder eine Aufgabe, die schon lange liegen bleibt? Schreiben Sie mir — unverbindlich und ohne Fachjargon. Den ersten Schritt zu machen ist der halbe Weg zum fertigen Projekt: adnan.aydin@bluewin.ch',
+        period: 'offen',
+        role: 'Frei für neue Arbeit',
         skills: [
             'back-end',
             'csharp',
@@ -470,7 +470,7 @@ const backEndProjects: PortfolioProject[] = [
             'technical-leadership',
         ],
         domain: 'Computer Science / Knowledge Management / Collaborative Systems',
-        owner: 'Cracow University of Technology',
+        owner: 'Ihr Projekt?',
 
         constellation: {
             id: 'back-end',
@@ -480,14 +480,14 @@ const backEndProjects: PortfolioProject[] = [
     },
     {
         id: 'kvl-security-device',
-        title: 'Security Device (KVL)',
-        label: 'Security Device (KVL)',
+        title: 'Wartet auf Ihren Auftrag',
+        label: 'AUFTRAG GESUCHT',
 
         description:
-            'An Android-based Key Variable Loader for securely managing encryption keys used by communication systems. Contributed to implementation, automated testing, local persistence, and cryptographic workflows in a security-sensitive environment.',
+            'Dieser Platz wartet auf Ihr Projekt. Haben Sie eine Idee, eine Website, die nicht mehr passt, oder eine Aufgabe, die schon lange liegen bleibt? Schreiben Sie mir — unverbindlich und ohne Fachjargon. Den ersten Schritt zu machen ist der halbe Weg zum fertigen Projekt: adnan.aydin@bluewin.ch',
 
-        period: 'July 2018 – September 2018',
-        role: 'Intern C# .NET Software Developer',
+        period: 'offen',
+        role: 'Frei für neue Arbeit',
 
         skills: [
             'back-end',
@@ -503,7 +503,7 @@ const backEndProjects: PortfolioProject[] = [
         ],
 
         domain: 'Cybersecurity / Key Management',
-        owner: 'Motorola Solutions',
+        owner: 'Ihr Projekt?',
 
         constellation: {
             id: 'back-end',
@@ -514,14 +514,14 @@ const backEndProjects: PortfolioProject[] = [
     },
     {
         id: 'onboarding-solution',
-        title: 'FOREX.COM Onboarding Solution',
-        label: 'Onboarding',
+        title: 'Wartet auf Ihren Auftrag',
+        label: 'AUFTRAG GESUCHT',
 
         description:
-            'A regulated fintech platform supporting client acquisition, onboarding, and lifecycle management. Developed RESTful services and business workflows that connected client-facing applications with internal systems and operational processes.',
+            'Dieser Platz wartet auf Ihr Projekt. Haben Sie eine Idee, eine Website, die nicht mehr passt, oder eine Aufgabe, die schon lange liegen bleibt? Schreiben Sie mir — unverbindlich und ohne Fachjargon. Den ersten Schritt zu machen ist der halbe Weg zum fertigen Projekt: adnan.aydin@bluewin.ch',
 
-        period: 'July 2019 – September 2021',
-        role: '.NET Software Engineer',
+        period: 'offen',
+        role: 'Frei für neue Arbeit',
 
         skills: [
             'back-end',
@@ -536,7 +536,7 @@ const backEndProjects: PortfolioProject[] = [
         ],
 
         domain: 'Fintech / Client Acquisition',
-        owner: 'StoneX',
+        owner: 'Ihr Projekt?',
 
         constellation: {
             id: 'back-end',

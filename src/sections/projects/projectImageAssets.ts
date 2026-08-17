@@ -1,5 +1,3 @@
-import groupwareDetailsUrl from '../../assets/projects/groupware-knowledge-platform.png?url';
-import groupwarePreviewUrl from '../../assets/projects/previews/groupware-knowledge-platform.webp?url';
 import kvlPreviewUrl from '../../assets/projects/previews/kvl-security-device.webp?url';
 import responsiveManifest from '../../assets/projects/responsive/manifest.json';
 import type { ResponsiveImageSource } from '../../utils/assetLoaders';
@@ -112,6 +110,13 @@ const HAPPYBECK_SCREENSHOT = {
     height: 1048,
 };
 
+// Platzhalterbild fuer die freien Projektplaetze.
+const OPEN_SLOT_IMAGE = {
+    src: 'https://res.cloudinary.com/ixyonosn/image/upload/v1786963422/Gemini_Generated_Image_gm6s7ugm6s7ugm6s.jpg',
+    width: 2816,
+    height: 1536,
+};
+
 const ADNAN_3D_SCREENSHOT = {
     src: 'https://res.cloudinary.com/ixyonosn/image/upload/v1786934551/Screenshot_2026-08-17_044211.png',
     width: 1547,
@@ -162,6 +167,30 @@ const VOKABELTRAINER_SCREENSHOT = {
 
 export const projectImagesById: Record<string, ProjectImageSet> = {
     ...responsiveProjectImages,
+    'masters-thesis': {
+        preview: OPEN_SLOT_IMAGE,
+        details: OPEN_SLOT_IMAGE,
+    },
+    'bachelors-thesis': {
+        preview: OPEN_SLOT_IMAGE,
+        details: OPEN_SLOT_IMAGE,
+    },
+    'help-and-support': {
+        preview: OPEN_SLOT_IMAGE,
+        details: OPEN_SLOT_IMAGE,
+    },
+    'groupware-knowledge-platform': {
+        preview: OPEN_SLOT_IMAGE,
+        details: OPEN_SLOT_IMAGE,
+    },
+    'kvl-security-device': {
+        preview: OPEN_SLOT_IMAGE,
+        details: OPEN_SLOT_IMAGE,
+    },
+    'onboarding-solution': {
+        preview: OPEN_SLOT_IMAGE,
+        details: OPEN_SLOT_IMAGE,
+    },
     'adnan-3d': {
         preview: ADNAN_3D_SCREENSHOT,
         details: ADNAN_3D_SCREENSHOT,
@@ -197,17 +226,5 @@ export const projectImagesById: Record<string, ProjectImageSet> = {
     'shareowner-online': {
         preview: VOKABELTRAINER_SCREENSHOT,
         details: VOKABELTRAINER_SCREENSHOT,
-    },
-    'groupware-knowledge-platform': {
-        preview: {
-            src: groupwarePreviewUrl,
-            width: 1600,
-            height: 900,
-        },
-        details: {
-            src: groupwareDetailsUrl,
-            width: 1920,
-            height: 1080,
-        },
     },
 };
