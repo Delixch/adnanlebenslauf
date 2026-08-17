@@ -29,6 +29,7 @@
     },
     "dependencies": {
         "gsap": "3.15.0",
+        "lil-gui": "0.21.0",
         "resend": "6.18.1",
         "three": "0.184.0",
         "zod": "4.4.3"
@@ -36,7 +37,6 @@
     "devDependencies": {
         "@types/three": "0.184.1",
         "knip": "6.29.0",
-        "lil-gui": "0.21.0",
         "mjml": "5.4.0",
         "oxfmt": "0.60.0",
         "oxlint": "1.75.0",

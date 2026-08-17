@@ -9,6 +9,7 @@ import { getScrollSmootherMaxScroll } from './app/navigation/getScrollSmootherMa
 import { registerGsap } from './app/registerGsap';
 import { refreshResponsiveConfig } from './app/responsiveConfig';
 import { initSoundControls } from './app/initSoundControls';
+import { initScenePanelLauncher } from './app/initScenePanelLauncher';
 import type {
     PortfolioProject,
     PortfolioProjectPreviewState,
@@ -101,11 +102,10 @@ try {
     await world.ready;
     await yieldToMainThread();
 
+    const disposeScenePanel = initScenePanelLauncher(world);
     if (import.meta.env.DEV) {
         (window as unknown as { world: typeof world }).world = world;
-        const { initDebugGui } = await import('./debug/initDebugGui');
-        const debugGui = initDebugGui(world.getDebugTargets());
-        import.meta.hot?.dispose(() => debugGui.destroy());
+        import.meta.hot?.dispose(disposeScenePanel);
     }
 
     setLoadingPhase('finalizing');
